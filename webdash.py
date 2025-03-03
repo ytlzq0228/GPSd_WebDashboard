@@ -80,12 +80,12 @@ def tpv_data():
 				continue
 
 			if data.get('class') == 'TPV':
-				tpv_data=data
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
-		print (jsonify(data))
 		keys_to_extract = ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']
-		tpv_data = {key: tpv_data[key] for key in keys_to_extract if key in tpv_data}
+		for i in keys_to_extract:
+			if i in data:
+				tpv_data[i]=data[i]
 		# 处理 GNSS 状态
 		status_map = {
 			0: "NOT FIX",
