@@ -77,17 +77,18 @@ def tpv_data():
 			try:
 				data = json.loads(new_data)
 			except json.JSONDecodeError:
-				save_log("GPSd received invalid JSON")
+				print("GPSd received invalid JSON")
 				continue
 
 			if data.get('class') == 'TPV':
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
+		print (jsonify(data))
 		keys_to_extract = ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']
 		tpv_data = {key: source_dict[key] for key in keys_to_extract if key in source_dict}
 		return jsonify(tpv_data)
 	except Exception as e:
-		save_log(f"Error fetching GPSd data: {e}")
+		print(f"Error fetching GPSd data: {e}")
 		return None
 
 
