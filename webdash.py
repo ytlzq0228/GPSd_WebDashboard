@@ -84,7 +84,8 @@ def tpv_data():
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
 		keys_to_extract = ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']
-		new_dict = {key: source_dict[key] for key in keys_to_extract if key in source_dict}
+		tpv_data = {key: source_dict[key] for key in keys_to_extract if key in source_dict}
+		return jsonify(tpv_data)
 	except Exception as e:
 		save_log(f"Error fetching GPSd data: {e}")
 		return None
