@@ -9,7 +9,7 @@ Description=gpsd_webdashboard
 After=network.target gpsd.service
 
 [Service]
-ExecStart=/etc/GPSd_WebDashboard/gpsd_webdashboard.sh
+ExecStart=/etc/GPSd_WebDashboard/gpsdwebdash.sh
 ExecStop=/usr/bin/pkill -f gpsdwebdash.py
 Restart=always
 RestartSec=5
