@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GPS Data Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入数据标签插件 -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+</head>
+<body>
+    <canvas id="snrChart" width="400" height="400"></canvas>
+    <table id="tpvTable" border="1">
+        <tbody>
+            <!-- TPV 数据将被填充到这里 -->
+        </tbody>
+    </table>
+
+    <script>
+        const ctx = document.getElementById('snrChart').getContext('2d');
+        let snrChart;
+
+        async function fetchSNRData() {
+            const response = await fetch('/snr-data');
+            const data = await response.json();
+            updateChart(data.satellites);
+            setTimeout(fetchSNRData, 500);  // 每500毫秒更新一次
+        }
+
+        function updateChart(satellites) {
+            satellites.sort((a, b) => a.PRN.localeCompare(b.PRN));
+            const labels = satellites.map(sat => `${sat.PRN}`);
+            const data = satellites.map(sat => sat.ss);
+            if (!snrChart) {
+                snrChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'SNR',
+                            data: data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            datalabels: {
+                                color: '#ffffff',
+                                display: true,
+                                font: {
+                                    weight: 'bold'
+                                },
+                                formatter: (value, context) => {
+                                    return `${value} dB`;  // 在柱状图顶端标注数值
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                snrChart.data.labels = labels;
+                snrChart.data.datasets[0].data = data;
+                snrChart.update();
+            }
+        }
+
+        async function fetchTPVData() {
+            const response = await fetch('/tpv-data');
+            const tpv = await response.json();
+            const tbody = document.getElementById('tpvTable').getElementsByTagName('tbody')[0];
+            tbody.innerHTML = '';  // 清除旧数据
+            for (const key in tpv) {
+                const row = tbody.insertRow();
+                row.insertCell(0).textContent = key;
+                row.insertCell(1).textContent = tpv[key] || 'N/A';
+            }
+            setTimeout(fetchTPVData, 500);  // 每500毫秒更新一次
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchSNRData();
+            fetchTPVData();
+        });
+    </script>
+</body>
+</html>
