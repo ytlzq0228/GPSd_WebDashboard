@@ -60,29 +60,13 @@ def snr_data():
 							satellites_data[sat_name] = sat['ss']
 			if time.time() - start_time > 2:  # 设置10秒超时，避免无限循环
 				break
-		#print(satellites_data)  # 调试输出合并后的数据
-		return jsonify({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in satellites_data.items()]})
+		satellites_data={'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in satellites_data.items()]}
+		return jsonify(satellites_data)
 	except Exception as e:
 		print(f"Error: {str(e)}")  # 打印错误
 		return jsonify({'error': str(e)})
 
 @app.route('/tpv-data')
-#def tpv_data():
-#	try:
-#		start_time = time.time()
-#		while True:
-#			new_data = gps_socket.next()  # 使用 next() 从 socket 获取数据
-#			if new_data:
-#				data_stream.unpack(new_data)
-#				print(data_stream.TPV)
-#				return jsonify(data_stream.TPV)
-#			if time.time() - start_time > 2:  # 设置10秒超时，避免无限循环
-#				break
-#		return jsonify({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in satellites_data.items()]})
-#	except Exception as e:
-#		print(f"Error: {str(e)}")  # 打印错误
-#		return jsonify({'error': str(e)})
-
 def tpv_data():
 
 	try:
@@ -96,12 +80,11 @@ def tpv_data():
 				save_log("GPSd received invalid JSON")
 				continue
 
-
 			if data.get('class') == 'TPV':
-				print(data)
-				return jsonify(data)
+				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
-	
+		keys_to_extract = ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']
+		new_dict = {key: source_dict[key] for key in keys_to_extract if key in source_dict}
 	except Exception as e:
 		save_log(f"Error fetching GPSd data: {e}")
 		return None
