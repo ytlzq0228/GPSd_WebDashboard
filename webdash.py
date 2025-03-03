@@ -74,6 +74,7 @@ def tpv_data():
 			new_data = gps_socket.next()  # 使用 next() 从 socket 获取数据
 			if new_data:
 				data_stream.unpack(new_data)
+				print(data_stream.TPV)
 				return jsonify(data_stream.TPV)
 			if time.time() - start_time > 2:  # 设置10秒超时，避免无限循环
 				break
