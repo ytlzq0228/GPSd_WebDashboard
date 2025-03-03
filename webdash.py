@@ -80,13 +80,13 @@ def tpv_data():
 				continue
 
 			if data.get('class') == 'TPV':
-				print(data)
+				tpv_data=data
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
 		keys_to_extract = ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']
 		for i in keys_to_extract:
-			if i in data:
-				tpv_data[i]=data[i]
+			if i in tpv_data:
+				status_data[i]=tpv_data[i]
 		# 处理 GNSS 状态
 		status_map = {
 			0: "NOT FIX",
@@ -96,8 +96,8 @@ def tpv_data():
 			4: "RTK FLOAT",
 			5: "DR FIX"
 		}
-		tpv_data['status'] = status_map.get(tpv_data['status'], "UNKNOWN")
-		return jsonify(tpv_data)
+		status_data['status'] = status_map.get(status_data['status'], "UNKNOWN")
+		return jsonify(status_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")
 		return None
