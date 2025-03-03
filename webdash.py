@@ -80,6 +80,7 @@ def tpv_data():
 				continue
 
 			if data.get('class') == 'TPV':
+				print(data)
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
 		keys_to_extract = ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']
