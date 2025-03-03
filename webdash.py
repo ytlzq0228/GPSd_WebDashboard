@@ -84,6 +84,7 @@ def tpv_data():
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
 		keys_to_extract = ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']
+		status_data={}
 		for i in keys_to_extract:
 			if i in tpv_data:
 				status_data[i]=tpv_data[i]
