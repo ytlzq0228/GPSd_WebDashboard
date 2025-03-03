@@ -68,7 +68,6 @@ def snr_data():
 
 @app.route('/tpv-data')
 def tpv_data():
-
 	try:
 		for new_data in gps_socket:
 			if not new_data:  # 跳过空数据
@@ -87,6 +86,16 @@ def tpv_data():
 		print (jsonify(data))
 		keys_to_extract = ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']
 		tpv_data = {key: tpv_data[key] for key in keys_to_extract if key in tpv_data}
+		# 处理 GNSS 状态
+		status_map = {
+			0: "NOT FIX",
+			1: "2D FIX",
+			2: "3D FIX",
+			3: "RTK FIX",
+			4: "RTK FLOAT",
+			5: "DR FIX"
+		}
+		tpv_data['status'] = status_map.get(tpv_data['status'], "UNKNOWN")
 		return jsonify(tpv_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")
