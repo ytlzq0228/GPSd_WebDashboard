@@ -47,7 +47,7 @@ def update_gps_data():
                     mode_map = {0: "Unknown", 1: "no fix", 2: "Normal Mode 2D", 3: "Normal Mode 3D"}
                     status_map = {0: "Unknown", 1: "Normal", 2: "DGPS", 3: "RTK FIX", 4: "RTK FLOAT", 5: "DR FIX", 6: "GNSSDR", 7: "Time (surveyed)", 8: "Simulated", 9: "P(Y)"}
                     status_data['status'] = mode_map.get(data_stream.TPV.get('mode', 0), "Unknown") if data_stream.TPV.get('status', 1) == 1 else status_map.get(data_stream.TPV.get('status', 1), "Unknown")
-                    status_data['speed'] = f"{float(status_data['speed'])*3.6:.2f}" if 'speed' in status_data else "N/A"
+                    status_data['speed'] = f"{float(status_data['speed'])*3.6:.2f}"
                     gps_data_cache['TPV'] = status_data
         time.sleep(1)  # Reduce CPU usage
         print(gps_data_cache)
