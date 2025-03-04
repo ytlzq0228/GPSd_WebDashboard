@@ -56,6 +56,7 @@ gps_data_cache = {
 
 def update_gps_data():
 	while True:
+		gps_data_cache['SNR']['satellites']=[]
 		for new_data in gps_socket:
 			if new_data:
 				try:
@@ -68,6 +69,7 @@ def update_gps_data():
 				if data_json.get('class') == 'SKY' and 'satellites' in data_json:
 					for i in data_json['satellites']:
 						gps_data_cache['SNR']['satellites'].append({'PRN': i['PRN'], 'ss': i['ss']})
+				
 				# 更新TPV数据，保留了你的细节处理
 				if data_json.get('class') == 'TPV':
 					status_data={}
