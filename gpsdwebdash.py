@@ -158,10 +158,11 @@ def path_data():
 				tpv_data=data
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
-		position_data={}
+		position_data={'lat':0,'lon':0}
 		for i in ['lat', 'lon']:
 			if i in tpv_data:
 				position_data[i]=tpv_data[i]
+		print(position_data)
 		return jsonify(position_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")
