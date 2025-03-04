@@ -92,6 +92,9 @@
             satellites.sort((a, b) => a.PRN.localeCompare(b.PRN));
             const labels = satellites.map(sat => `${sat.PRN}`);
             const data = satellites.map(sat => sat.ss);
+            const backgroundColors = satellites.map(sat => sat.used ? 'rgba(0, 0, 139, 0.2)' : 'rgba(173, 216, 230, 0.2)'); // 深蓝和浅蓝
+            const borderColors = satellites.map(sat => sat.used ? 'rgba(0, 0, 139, 1)' : 'rgba(173, 216, 230, 1)');
+        
             if (!snrChart) {
                 snrChart = new Chart(ctx, {
                     type: 'bar',
@@ -100,8 +103,8 @@
                         datasets: [{
                             label: 'SNR',
                             data: data,
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: backgroundColors,
+                            borderColor: borderColors,
                             borderWidth: 1
                         }]
                     },
@@ -131,6 +134,8 @@
             } else {
                 snrChart.data.labels = labels;
                 snrChart.data.datasets[0].data = data;
+                snrChart.data.datasets[0].backgroundColor = backgroundColors;
+                snrChart.data.datasets[0].borderColor = borderColors;
                 snrChart.update();
             }
         }
