@@ -102,7 +102,7 @@ def tpv_data():
 			8: "Simulated",
 			9: "P(Y)",
 		}
-		status_data['status_raw']=status_data.get('status',1)
+		status_data['status_raw']=status_data.get('mode',0)
 		if status_data.get('status',1) ==1:
 			status_data['status'] = mode_map.get(status_data.get('mode',0), "Unknown")
 		else:
