@@ -61,6 +61,7 @@
 </head>
 <body>
     <canvas id="snrChart"></canvas>
+    <canvas id="trackMap"></canvas> <!-- 新增轨迹图画布 -->
     <div id="dataTables">
         <table id="tpvTable">
             <tbody>
@@ -76,7 +77,9 @@
 
     <script>
         const ctx = document.getElementById('snrChart').getContext('2d');
-        let snrChart;
+        const ctxTrack = document.getElementById('trackMap').getContext('2d');
+
+        let snrChart, trackChart;
 
         async function fetchSNRData() {
             const response = await fetch('/snr-data');
@@ -128,6 +131,43 @@
                 snrChart.update();
             }
         }
+
+        async function fetchTrackData() {
+            const response = await fetch('/path-data');
+            const data = await response.json();
+            updateTrackMap(data.lat, data.lon);
+            setTimeout(fetchTrackData, 500);  // 每500毫秒更新一次
+        }
+
+        function updateTrackMap(lat, lon) {
+            if (!trackChart) {
+                trackChart = new Chart(ctxTrack, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'GPS Track',
+                            data: [{ x: lon, y: lat }],
+                            backgroundColor: 'rgba(255, 99, 132, 1)'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom'
+                            },
+                            y: {
+                                beginAtZero: false
+                            }
+                        }
+                    }
+                });
+            } else {
+                trackChart.data.datasets[0].data.push({ x: lon, y: lat });
+                trackChart.update();
+            }
+        }
+
 
         async function fetchTPVData() {
             const response = await fetch('/tpv-data');
@@ -191,6 +231,7 @@
             fetchSNRData();
             fetchTPVData();
             fetchLogData();
+            fetchTrackData();
         });
     </script>
 </body>
