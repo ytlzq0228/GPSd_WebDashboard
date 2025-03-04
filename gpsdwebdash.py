@@ -130,4 +130,7 @@ def log_data():
 		return None
 
 if __name__ == '__main__':
+	import logging
+	log = logging.getLogger('werkzeug')
+	log.setLevel(logging.ERROR)  # 只记录错误信息
 	app.run(debug=False, host='0.0.0.0', port=5000)
