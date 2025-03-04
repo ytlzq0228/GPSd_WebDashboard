@@ -85,7 +85,7 @@ def tpv_data():
 			time.sleep(0.01)  # 避免 CPU 100% 占用
 		print()
 		status_data={}
-		for i in ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time', 'speed']:
+		for i in ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'time', 'speed']:
 			if i in tpv_data:
 				status_data[i]=tpv_data[i]
 		# 处理 GNSS 状态
@@ -102,11 +102,10 @@ def tpv_data():
 			8: "Simulated",
 			9: "P(Y)",
 		}
-		status_data['status_raw']=status_data.get('mode',0)
-		if status_data.get('status',1) ==1:
-			status_data['status'] = mode_map.get(status_data.get('mode',0), "Unknown")
+		if tpv_data.get('status',1) ==1:
+			status_data['status'] = mode_map.get(tpv_data.get('mode',0), "Unknown")
 		else:
-			status_data['status'] = status_map.get(status_data.get('status',1), "Unknown")
+			status_data['status'] = status_map.get(tpv_data.get('status',1), "Unknown")
 		return jsonify(status_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")
