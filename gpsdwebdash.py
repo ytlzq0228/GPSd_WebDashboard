@@ -73,7 +73,7 @@ def snr_data():
 						if 'ss' in sat:
 							sat_name=get_constellation(sat['PRN'])
 							satellites_data[sat_name] = sat['ss']
-			if time.time() - start_time > 2:  # 设置10秒超时，避免无限循环
+			if time.time() - start_time > 1:  # 设置10秒超时，避免无限循环
 				break
 		satellites_data={'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in satellites_data.items()]}
 		return jsonify(satellites_data)
