@@ -58,19 +58,21 @@ def update_gps_data():
 	while True:
 		for new_data in gps_socket:
 			if new_data:
-				data_stream.unpack(new_data)
-				# 更新SNR数据
-				if 'satellites' in data_stream.SKY:
-					for i in data_stream.SKY['satellites']:
-						gps_data_cache['SNR']['satellites'].append({'PRN': i['PRN'], 'ss': i['ss']})
-					#gps_data_cache['SNR'] = {
-					#	get_constellation(sat['PRN']): sat['ss'] for sat in data_stream.SKY['satellites'] if 'ss' in sat
-					#}
 				try:
 					data_json = json.loads(new_data)
 				except json.JSONDecodeError:
 					print("GPSd received invalid JSON")
 					continue
+
+				# 更新SNR数据
+				if data_json.get('class') == 'SKY' and 'satellites' in data_json:
+				#if 'satellites' in data_stream.SKY:
+					for i in data_json['satellites']:
+						gps_data_cache['SNR']['satellites'].append({'PRN': i['PRN'], 'ss': i['ss']})
+					#gps_data_cache['SNR'] = {
+					#	get_constellation(sat['PRN']): sat['ss'] for sat in data_stream.SKY['satellites'] if 'ss' in sat
+					#}
+
 				# 更新TPV数据，保留了你的细节处理
 				if data_json.get('class') == 'TPV':
 					status_data={}
