@@ -106,6 +106,7 @@ def tpv_data():
 			status_data['status'] = mode_map.get(tpv_data.get('mode',0), "Unknown")
 		else:
 			status_data['status'] = status_map.get(tpv_data.get('status',1), "Unknown")
+		status_data['speed']=100
 		return jsonify(status_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")
