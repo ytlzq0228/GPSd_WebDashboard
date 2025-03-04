@@ -56,8 +56,8 @@ gps_data_cache = {
 
 def update_gps_data():
 	while True:
-		gps_data_cache['SNR']['satellites']=[]
 		for new_data in gps_socket:
+		gps_data_cache['SNR']['satellites']=[]
 			if new_data:
 				try:
 					data_json = json.loads(new_data)
