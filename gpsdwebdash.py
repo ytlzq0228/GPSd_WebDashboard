@@ -141,6 +141,7 @@ def log_data():
 	try:
 		log_file_data={}
 		log_file_data['更新时间']=get_last_modified_time(APRS_LOG_FILE)
+		print(jsonify(log_file_data))
 		return jsonify(log_file_data)
 	except Exception as e:
 		print(f"Error fetching log file data: {e}")
