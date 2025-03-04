@@ -222,6 +222,10 @@
                     let speedValue = parseFloat(data[key]);
                     let percentage = Math.min(speedValue / 150 * 100, 100);  // 计算百分比
                     cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${data[key]}</div>`;
+                } else if (key.toLowerCase() === 'Sat_Qty') {
+                    let Sat_QtyValue = parseFloat(data[key]);
+                    let percentage = Math.min(Sat_QtyValue / 40 * 100, 100);  // 计算百分比
+                    cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${data[key]}</div>`;
                 } else if (key.toLowerCase() === '更新延迟') {
                     cellValue.className = `update-delay ${getDelayClass(data[key])}`;
                 }
