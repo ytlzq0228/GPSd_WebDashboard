@@ -112,6 +112,14 @@ def tpv_data():
 		print(f"Error fetching GPSd data: {e}")
 		return None
 
+@app.route('/log_data')
+def log_data():
+	try:
+		log_file_data={0: "Unknown",1: "no fix",2: "Normal Mode 2D",3: "Normal Mode 3D"}
+		return jsonify(log_file_data)
+	except Exception as e:
+		print(f"Error fetching log file data: {e}")
+		return None
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0', port=5000)

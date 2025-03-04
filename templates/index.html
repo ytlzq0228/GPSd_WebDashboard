@@ -16,9 +16,14 @@
             width: 90vw; /* 控制宽度为视口宽度的90% */
             margin: auto;
         }
+        .table-container {
+            display: flex; /* 使用flex布局 */
+            justify-content: space-around; /* 表格之间的间隔 */
+            width: 100vw; /* 控制容器宽度为视口宽度的100% */
+        }
         table {
-            width: 50vw; /* 表格宽度调整为视口宽度的50% */
-            margin: auto;
+            width: 45vw; /* 表格宽度调整为视口宽度的45% */
+            margin: 10px;
             border-collapse: collapse;
         }
         td, th {
@@ -43,22 +48,29 @@
             height: 100%;
             background-color: lightgreen;
             color: black;
-            line-height: 2; /* 调整行高以垂直居中文本 */
-            width: 0%; /* 初始化宽度 */
-            transition: width 0.5s ease; /* 平滑过渡动画 */
-            padding: 0 5px; /* 文本内边距 */
+            line-height: 2;
+            width: 0%;
+            transition: width 0.5s ease;
+            padding: 0 5px;
             box-sizing: border-box;
-            white-space: nowrap; /* 防止文本换行 */
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
     <canvas id="snrChart"></canvas>
-    <table id="tpvTable">
-        <tbody>
-            <!-- TPV 数据将被填充到这里 -->
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table id="tpvTable">
+            <tbody>
+                <!-- TPV 数据将被填充到这里 -->
+            </tbody>
+        </table>
+        <table id="logTable">
+            <tbody>
+                <!-- Log 数据将被填充到这里 -->
+            </tbody>
+        </table>
+    </div>
 
     <script>
         const ctx = document.getElementById('snrChart').getContext('2d');
@@ -68,7 +80,7 @@
             const response = await fetch('/snr-data');
             const data = await response.json();
             updateChart(data.satellites);
-            setTimeout(fetchSNRData, 500);  // 每500毫秒更新一次
+            setTimeout(fetchSNRData, 500);
         }
 
         function updateChart(satellites) {
@@ -102,7 +114,7 @@
                                     weight: 'bold'
                                 },
                                 formatter: (value, context) => {
-                                    return `${value} dB`;  // 在柱状图顶端标注数值
+                                    return `${value} dB`;
                                 }
                             }
                         }
@@ -119,7 +131,7 @@
             const response = await fetch('/tpv-data');
             const tpv = await response.json();
             const tbody = document.getElementById('tpvTable').getElementsByTagName('tbody')[0];
-            tbody.innerHTML = '';  // 清除旧数据
+            tbody.innerHTML = '';
             for (const key in tpv) {
                 const row = tbody.insertRow();
                 const cellKey = row.insertCell(0);
@@ -128,7 +140,6 @@
                 cellValue.textContent = tpv[key] || 'N/A';
 
                 if (key.toLowerCase() === 'status') {
-                    // 单独对状态字段着色
                     cellValue.className = `status-cell ${
                         tpv[key] === 'RTK FIX' ? 'rtk-fix' :
                         tpv[key] === 'RTK FLOAT' ? 'rtk-float' :
@@ -137,18 +148,33 @@
                         tpv[key] === 'DR FIX' ? 'dr-fix' : 'unknown'
                     }`;
                 } else if (key.toLowerCase() === 'speed') {
-                    // 对速度字段添加进度条
                     let speedValue = parseFloat(tpv[key]);
-                    let percentage = Math.min(speedValue / 150 * 100, 100);  // 计算百分比，最大不超过100%
+                    let percentage = Math.min(speedValue / 150 * 100, 100);
                     cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${tpv[key]}</div>`;
                 }
             }
-            setTimeout(fetchTPVData, 500);  // 每500毫秒更新一次
+            setTimeout(fetchTPVData, 500);
+        }
+
+        async function fetchLogData() {
+            const response = await fetch('/log_data');
+            const logs = await response.json();
+            const tbody = document.getElementById('logTable').getElementsByTagName('tbody')[0];
+            tbody.innerHTML = '';
+            logs.forEach(log => {
+                const row = tbody.insertRow();
+                const cellKey = row.insertCell(0);
+                const cellValue = row.insertCell(1);
+                cellKey.textContent = log.timestamp;
+                cellValue.textContent = log.message;
+            });
+            setTimeout(fetchLogData, 500);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             fetchSNRData();
             fetchTPVData();
+            fetchLogData();
         });
     </script>
 </body>
