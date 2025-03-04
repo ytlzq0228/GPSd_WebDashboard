@@ -72,9 +72,9 @@ def update_gps_data():
 				
 				# 更新TPV数据，保留了你的细节处理
 				if data_json.get('class') == 'TPV':
+					status_data={}
 					status_data['Sat_Qty']=len(gps_data_cache['SNR']['satellites'])
 					gps_data_cache['SNR']['satellites']=[]#每个周期更新TPV的时候清除缓存的SKY数据
-					status_data={}
 					for i in ['alt', 'track', 'magtrack', 'magvar', 'time', 'speed']:
 						if i in data_json:
 							status_data[i]=data_json[i]
