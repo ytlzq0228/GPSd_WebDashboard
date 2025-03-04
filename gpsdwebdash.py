@@ -120,7 +120,7 @@ def tpv_data():
 			status_data['status'] = mode_map.get(tpv_data.get('mode',0), "Unknown")
 		else:
 			status_data['status'] = status_map.get(tpv_data.get('status',1), "Unknown")
-		status_data['speed']=status_data['speed']*1.85
+		status_data['speed']=status_data['speed']*3.6 #米/秒转公里/小时
 		#status_data['speed']=100 #test speed only
 		return jsonify(status_data)
 	except Exception as e:
