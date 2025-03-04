@@ -23,6 +23,29 @@ data_stream = gps3.DataStream()
 gps_socket.connect()
 gps_socket.watch()
 
+def get_constellation(prn):
+	# 定义PRN号与星座的对应关系
+	constellation_map = {
+		'GPS': range(1, 33),  # GPS uses PRNs from 1 to 32
+		'GLONASS': range(33, 66),  # GLONASS uses PRNs from 33 to 65
+		'Galileo': range(301, 337),  # Galileo uses PRNs from 301 to 336
+		'BeiDou': range(201, 237),  # BeiDou uses PRNs from 201 to 236
+		'QZSS': range(193, 198),  # QZSS uses PRNs from 193 to 197
+		'IRNSS': range(401, 408),  # IRNSS uses PRNs from 401 to 407
+		'WAAS': range(133, 139),  # WAAS (North America) uses PRNs from 133 to 138
+		'EGNOS': range(120, 139),  # EGNOS (Europe) uses PRNs from 120 to 138
+		'GAGAN': range(127, 129),  # GAGAN (India) uses PRNs 127 and 128
+		'MSAS': range(129, 138)  # MSAS (Japan) uses PRNs from 129 to 137
+	}
+
+	# 遍历字典，找到相应的星座
+	for constellation, prns in constellation_map.items():
+		if prn in prns:
+			return f"{constellation}_{prn}"
+	return f"Unknow_{prn}"
+
+
+
 # 定义全局缓存
 gps_data_cache = {
 	'SNR': {},
