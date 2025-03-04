@@ -142,5 +142,15 @@ def log_data():
 		print(f"Error fetching log file data: {e}")
 		return None
 
+@app.route('/path-data')
+def path_data():
+	try:
+		position_data={}
+		print(position_data)
+		return jsonify(position_data)
+	except Exception as e:
+		print(f"Error fetching log file data: {e}")
+		return None
+
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0', port=5000)
