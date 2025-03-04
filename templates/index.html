@@ -154,6 +154,8 @@
                     let speedValue = parseFloat(data[key]);
                     let percentage = Math.min(speedValue / 150 * 100, 100);  // 计算百分比
                     cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${data[key]}</div>`;
+                } else if (key.toLowerCase() === '更新延迟') {
+                    cellValue.className = `update-delay ${getDelayClass(data[key])}`;
                 }
             }
         }
@@ -169,6 +171,11 @@
             }
         }
 
+        function getDelayClass(delay) {
+            if (delay < 3) return 'word_green';
+            if (delay < 5) return 'word_yellow';
+            return 'word_red';
+        }
 
         document.addEventListener('DOMContentLoaded', function() {
             fetchSNRData();
