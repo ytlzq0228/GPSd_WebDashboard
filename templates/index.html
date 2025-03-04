@@ -140,7 +140,7 @@
         }
 
         async function updateTrackMap(lat, lon) {
-            const range = 0.000091;  // 计算得到的视图范围
+            const range = 0.001;  // 计算得到的视图范围
             if (!trackChart) {
                 trackChart = new Chart(ctxTrack, {
                     type: 'scatter',
