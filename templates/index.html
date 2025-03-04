@@ -221,11 +221,11 @@
                 } else if (key.toLowerCase() === 'speed') {
                     let speedValue = parseFloat(data[key]);
                     let percentage = Math.min(speedValue / 150 * 100, 100);  // 计算百分比
-                    cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${data[key]}</div>`;
-                } else if (key.toLowerCase() === 'Sat_Qty') {
-                    let Sat_QtyValue = parseFloat(data[key]);
-                    let percentage = Math.min(Sat_QtyValue / 40 * 100, 100);  // 计算百分比
-                    cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${data[key]}</div>`;
+                    cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${data[key]} km/h</div>`;
+                } else if (key.toLowerCase() === 'sat_qty') {
+                    let satValue = parseInt(data[key], 10);
+                    let satPercentage = Math.min(satValue / 40 * 100, 100);  // 计算百分比, 假定最大可见卫星数量为40
+                    cellValue.innerHTML = `<div class="speed-bar" style="width:${satPercentage}%;">${data[key]}</div>`;
                 } else if (key.toLowerCase() === '更新延迟') {
                     cellValue.className = `update-delay ${getDelayClass(data[key])}`;
                 }
