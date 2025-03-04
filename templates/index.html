@@ -8,6 +8,9 @@
     <!-- 引入数据标签插件 -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <style>
+        body, input, button, select, textarea {
+            font-family: 'Microsoft YaHei', '微软雅黑', sans-serif; /* 设置默认字体为微软雅黑 */
+        }
         canvas {
             max-height: 20vh; /* 控制柱状图的高度为视口高度的20% */
             width: 90vw; /* 控制宽度为视口宽度的90% */
@@ -38,7 +41,7 @@
         .unknown { background-color: yellow; color: black; }
         .speed-bar {
             height: 100%;
-            background-color: green;
+            background-color: lightgreen;
             color: black;
             line-height: 2; /* 调整行高以垂直居中文本 */
             width: 0%; /* 初始化宽度 */
