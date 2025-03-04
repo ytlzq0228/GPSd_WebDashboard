@@ -145,11 +145,26 @@ def log_data():
 @app.route('/path-data')
 def path_data():
 	try:
+		for new_data in gps_socket:
+			if not new_data:  # 跳过空数据
+				continue
+			try:
+				data = json.loads(new_data)
+			except json.JSONDecodeError:
+				print("GPSd received invalid JSON")
+				continue
+
+			if data.get('class') == 'TPV':
+				tpv_data=data
+				break
+			time.sleep(0.01)  # 避免 CPU 100% 占用
 		position_data={}
-		print(position_data)
+		for i in ['lat', 'lon']:
+			if i in tpv_data:
+				position_data[i]=tpv_data[i]
 		return jsonify(position_data)
 	except Exception as e:
-		print(f"Error fetching log file data: {e}")
+		print(f"Error fetching GPSd data: {e}")
 		return None
 
 if __name__ == '__main__':
