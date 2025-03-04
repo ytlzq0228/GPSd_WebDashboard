@@ -90,14 +90,18 @@ def tpv_data():
 				status_data[i]=tpv_data[i]
 		# 处理 GNSS 状态
 		status_map = {
-			0: "NOT FIX",
-			1: "2D FIX",
-			2: "3D FIX",
+			0: "Unknown",
+			1: "Normal",
+			2: "DGPS",
 			3: "RTK FIX",
 			4: "RTK FLOAT",
-			5: "DR FIX"
+			5: "DR FIX",
+			6: "GNSSDR",
+			7: "Time (surveyed)",
+			8: "Simulated",
+			9: "P(Y)",
 		}
-		status_data['status'] = status_map.get(status_data.get('status',10), "UNKNOWN")
+		status_data['status'] = status_map.get(status_data.get('status',0), "Unknown")
 		return jsonify(status_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")

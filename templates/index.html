@@ -32,7 +32,7 @@
         }
         .rtk-fix { background-color: darkgreen; color: white; }
         .rtk-float { background-color: green; color: white; }
-        .three-d-fix { background-color: lightgreen; color: black; }
+        .DGPS-fix { background-color: lightgreen; color: black; }
         .dr-fix { background-color: blue; color: white; }
         .unknown { background-color: yellow; color: black; }
     </style>
@@ -117,7 +117,7 @@
                     cellValue.className = `status-cell ${
                         tpv[key] === 'RTK FIX' ? 'rtk-fix' :
                         tpv[key] === 'RTK FLOAT' ? 'rtk-float' :
-                        tpv[key] === '3D FIX' ? 'three-d-fix' :
+                        tpv[key] === 'DGPS' ? 'DGPS-fix' :
                         tpv[key] === 'DR FIX' ? 'dr-fix' : 'unknown'
                     }`;
                 }
