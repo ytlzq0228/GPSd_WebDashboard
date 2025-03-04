@@ -46,17 +46,7 @@ def get_constellation(prn):
 	return f"Unknow_{prn}"
 
 
-def get_last_modified_time(file_path):
-    try:
-        # 获取文件的最后修改时间戳
-        modification_time = os.path.getmtime(file_path)
-        # 将时间戳转换为可读的格式
-        readable_time = datetime.fromtimestamp(modification_time)
-        return readable_time
-    except FileNotFoundError:
-        return "File not found"
 
-# 指定文件路径
 
 
 @app.route('/')
@@ -140,10 +130,10 @@ def tpv_data():
 @app.route('/log_data')
 def log_data():
 	try:
-		log_file_update_time=get_last_modified_time(APRS_LOG_FILE)
+		log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
 		updatetime_diff=time.time()-log_file_update_time
 		log_file_data={}
-		log_file_data['更新时间']=log_file_update_time
+		log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time)
 		log_file_data['更新延迟']=updatetime_diff
 		print(jsonify(log_file_data))
 		return jsonify(log_file_data)
