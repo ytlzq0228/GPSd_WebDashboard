@@ -4,6 +4,7 @@ import json
 import time
 import configparser
 from save_log import save_log
+from datetime import datetime
 
 CONFIG_FILE='/etc/GPS_config.ini'
 config = configparser.ConfigParser()
