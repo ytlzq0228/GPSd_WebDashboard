@@ -84,7 +84,7 @@ def tpv_data():
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
 		status_data={}
-		for i in ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time']:
+		for i in ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time', 'speed']:
 			if i in tpv_data:
 				status_data[i]=tpv_data[i]
 		# 处理 GNSS 状态
