@@ -99,7 +99,7 @@ def index():
 
 @app.route('/snr-data')
 def snr_data():
-	print(gps_data_cache['SNR'])
+	print(len(gps_data_cache['SNR']))
 	#print({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 	return jsonify({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 
