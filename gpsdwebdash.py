@@ -68,7 +68,7 @@ def update_gps_data():
 				# 更新SNR数据
 				if data_json.get('class') == 'SKY' and 'satellites' in data_json:
 					for i in data_json['satellites']:
-						if i['used']:
+						if i['used'] and get_constellation(i['PRN']) not in gps_data_cache['SNR']['satellites']:
 							gps_data_cache['SNR']['satellites'].append({'PRN': get_constellation(i['PRN']), 'ss': i['ss']})
 				
 				# 更新TPV数据，保留了你的细节处理
