@@ -37,12 +37,11 @@
             text-align: center;
             font-weight: bold;
         }
-        .rtk-fix { background-color: darkgreen; color: white; }
-        .rtk-float { background-color: green; color: white; }
-        .DGPS-fix { background-color: lightgreen; color: black; }
-        .normal-3d-fix { background-color: lightgreen; color: black; }
-        .dr-fix { background-color: blue; color: white; }
-        .unknown { background-color: yellow; color: black; }
+        .word_darkgreen { background-color: darkgreen; color: white; }
+        .word_green { background-color: green; color: white; }
+        .word_lightgreen { background-color: lightgreen; color: black; }
+        .word_blue { background-color: blue; color: white; }
+        .word_yellow { background-color: yellow; color: black; }
         .speed-bar {
             height: 100%;
             background-color: lightgreen;
@@ -160,14 +159,15 @@
 
         function getStatusClass(status) {
             switch (status) {
-                case 'RTK FIX': return 'rtk-fix';
-                case 'RTK FLOAT': return 'rtk-float';
-                case 'DGPS': return 'DGPS-fix';
-                case 'Normal Mode 3D': return 'normal-3d-fix';
-                case 'DR FIX': return 'dr-fix';
-                default: return 'unknown';
+                case 'RTK FIX': return 'word_darkgreen';
+                case 'RTK FLOAT': return 'word_green';
+                case 'DGPS': return 'word_lightgreen';
+                case 'Normal Mode 3D': return 'word_lightgreen';
+                case 'DR FIX': return 'word_blue';
+                default: return 'word_yellow';
             }
         }
+
 
         document.addEventListener('DOMContentLoaded', function() {
             fetchSNRData();
