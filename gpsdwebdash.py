@@ -78,26 +78,17 @@ def update_gps_data():
 							status_data[i]=data_json[i]
 					# 处理 GNSS 状态
 					mode_map={0: "Unknown",1: "no fix",2: "Normal Mode 2D",3: "Normal Mode 3D"}
-					status_map = {
-						0: "Unknown",
-						1: "Normal",
-						2: "DGPS",
-						3: "RTK FIX",
-						4: "RTK FLOAT",
-						5: "DR FIX",
-						6: "GNSSDR",
-						7: "Time (surveyed)",
-						8: "Simulated",
-						9: "P(Y)",
-					}
+					status_map = {0: "Unknown",1: "Normal",2: "DGPS",3: "RTK FIX",4: "RTK FLOAT",5: "DR FIX",6: "GNSSDR",7: "Time (surveyed)",8: "Simulated",9: "P(Y)",}
 					if data_json.get('status',1) ==1:
 						status_data['status'] = mode_map.get(data_json.get('mode',0), "Unknown")
 					else:
 						status_data['status'] = status_map.get(data_json.get('status',1), "Unknown")
 					status_data['speed']="%.2f"%(status_data['speed']*3.6) #米/秒转公里/小时
 					gps_data_cache['TPV'] = status_data
+					for i in ['lat', 'lon']:
+						if i in data_json:
+							gps_data_cache['Path'][i]=data_json[i]
 		time.sleep(1)  # Reduce CPU usage
-		print(gps_data_cache)
 
 # 启动后台线程更新数据
 threading.Thread(target=update_gps_data, daemon=True).start()
