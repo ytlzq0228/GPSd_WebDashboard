@@ -101,7 +101,7 @@ def tpv_data():
 			8: "Simulated",
 			9: "P(Y)",
 		}
-		status_data['status'] = status_map.get(status_data.get('status',0), "Unknown")
+		status_data['status'] = status_map.get(status_data.get('status',1), "Unknown")
 		return jsonify(status_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")
