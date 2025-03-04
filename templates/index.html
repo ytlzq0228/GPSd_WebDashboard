@@ -2,14 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS Data Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- 引入数据标签插件 -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+        canvas {
+            max-height: 20vh; /* 控制柱状图的高度为视口高度的20% */
+            width: 90vw; /* 控制宽度为视口宽度的90% */
+            margin: auto;
+        }
+        table {
+            width: 90vw;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <canvas id="snrChart" width="400" height="400"></canvas>
-    <table id="tpvTable" border="1">
+    <canvas id="snrChart"></canvas>
+    <table id="tpvTable">
         <tbody>
             <!-- TPV 数据将被填充到这里 -->
         </tbody>
