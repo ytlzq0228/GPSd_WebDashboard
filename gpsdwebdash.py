@@ -83,7 +83,7 @@ def tpv_data():
 				tpv_data=data
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
-		print(tpv_data)
+		print()
 		status_data={}
 		for i in ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time', 'speed']:
 			if i in tpv_data:
@@ -97,7 +97,7 @@ def tpv_data():
 			4: "RTK FLOAT",
 			5: "DR FIX"
 		}
-		status_data['status'] = status_map.get(status_data['status'], "UNKNOWN")
+		status_data['status'] = status_map.get(status_data.get('status',10), "UNKNOWN")
 		return jsonify(status_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")
