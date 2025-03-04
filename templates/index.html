@@ -26,15 +26,6 @@
         th {
             background-color: #f2f2f2;
         }
-        .status-cell {
-            text-align: center;
-            font-weight: bold;
-        }
-        .rtk-fix { background-color: darkgreen; color: white; }
-        .rtk-float { background-color: green; color: white; }
-        .three-d-fix { background-color: lightgreen; color: black; }
-        .dr-fix { background-color: blue; color: white; }
-        .unknown { background-color: yellow; color: black; }
     </style>
 </head>
 <body>
@@ -107,20 +98,8 @@
             tbody.innerHTML = '';  // 清除旧数据
             for (const key in tpv) {
                 const row = tbody.insertRow();
-                const cellKey = row.insertCell(0);
-                const cellValue = row.insertCell(1);
-                cellKey.textContent = key;
-                cellValue.textContent = tpv[key] || 'N/A';
-
-                if (key.toLowerCase() === 'status') {
-                    // 单独对状态字段着色
-                    cellValue.className = `status-cell ${
-                        tpv[key] === 'RTK FIX' ? 'rtk-fix' :
-                        tpv[key] === 'RTK FLOAT' ? 'rtk-float' :
-                        tpv[key] === '3D FIX' ? 'three-d-fix' :
-                        tpv[key] === 'DR FIX' ? 'dr-fix' : 'unknown'
-                    }`;
-                }
+                row.insertCell(0).textContent = key;
+                row.insertCell(1).textContent = tpv[key] || 'N/A';
             }
             setTimeout(fetchTPVData, 500);  // 每500毫秒更新一次
         }
