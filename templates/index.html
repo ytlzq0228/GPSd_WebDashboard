@@ -5,24 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS Data Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- 引入数据标签插件 -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <style>
         body, input, button, select, textarea {
-            font-family: 'Microsoft YaHei', '微软雅黑', sans-serif; /* 设置默认字体为微软雅黑 */
+            font-family: 'Microsoft YaHei', '微软雅黑', sans-serif;
         }
         canvas {
-            max-height: 20vh; /* 控制柱状图的高度为视口高度的20% */
-            width: 90vw; /* 控制宽度为视口宽度的90% */
+            max-height: 20vh;
+            width: 90vw;
             margin: auto;
         }
-        .table-container {
-            display: flex; /* 使用flex布局 */
-            justify-content: space-around; /* 表格之间的间隔 */
-            width: 100vw; /* 控制容器宽度为视口宽度的100% */
+        #dataTables {
+            display: flex;
+            justify-content: center;
+            width: 100%;
         }
         table {
-            width: 45vw; /* 表格宽度调整为视口宽度的45% */
+            width: 45vw;
             margin: 10px;
             border-collapse: collapse;
         }
@@ -47,8 +46,6 @@
         .speed-bar {
             height: 100%;
             background-color: lightgreen;
-            color: black;
-            line-height: 2;
             width: 0%;
             transition: width 0.5s ease;
             padding: 0 5px;
@@ -59,7 +56,7 @@
 </head>
 <body>
     <canvas id="snrChart"></canvas>
-    <div class="table-container">
+    <div id="dataTables">
         <table id="tpvTable">
             <tbody>
                 <!-- TPV 数据将被填充到这里 -->
@@ -67,7 +64,7 @@
         </table>
         <table id="logTable">
             <tbody>
-                <!-- Log 数据将被填充到这里 -->
+                <!-- 日志数据将被填充到这里 -->
             </tbody>
         </table>
     </div>
@@ -80,7 +77,7 @@
             const response = await fetch('/snr-data');
             const data = await response.json();
             updateChart(data.satellites);
-            setTimeout(fetchSNRData, 500);
+            setTimeout(fetchSNRData, 500);  // 每500毫秒更新一次
         }
 
         function updateChart(satellites) {
@@ -114,7 +111,7 @@
                                     weight: 'bold'
                                 },
                                 formatter: (value, context) => {
-                                    return `${value} dB`;
+                                    return `${value} dB`;  // 在柱状图顶端标注数值
                                 }
                             }
                         }
@@ -130,45 +127,46 @@
         async function fetchTPVData() {
             const response = await fetch('/tpv-data');
             const tpv = await response.json();
-            const tbody = document.getElementById('tpvTable').getElementsByTagName('tbody')[0];
-            tbody.innerHTML = '';
-            for (const key in tpv) {
-                const row = tbody.insertRow();
-                const cellKey = row.insertCell(0);
-                const cellValue = row.insertCell(1);
-                cellKey.textContent = key;
-                cellValue.textContent = tpv[key] || 'N/A';
-
-                if (key.toLowerCase() === 'status') {
-                    cellValue.className = `status-cell ${
-                        tpv[key] === 'RTK FIX' ? 'rtk-fix' :
-                        tpv[key] === 'RTK FLOAT' ? 'rtk-float' :
-                        tpv[key] === 'DGPS' ? 'DGPS-fix' :
-                        tpv[key] === 'Normal Mode 3D' ? 'normal-3d-fix' :
-                        tpv[key] === 'DR FIX' ? 'dr-fix' : 'unknown'
-                    }`;
-                } else if (key.toLowerCase() === 'speed') {
-                    let speedValue = parseFloat(tpv[key]);
-                    let percentage = Math.min(speedValue / 150 * 100, 100);
-                    cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${tpv[key]}</div>`;
-                }
-            }
-            setTimeout(fetchTPVData, 500);
+            updateTable(tpv, 'tpvTable');
+            setTimeout(fetchTPVData, 500);  // 每500毫秒更新一次
         }
 
         async function fetchLogData() {
             const response = await fetch('/log_data');
-            const logs = await response.json();
-            const tbody = document.getElementById('logTable').getElementsByTagName('tbody')[0];
-            tbody.innerHTML = '';
-            for (const key in logs) {
+            const log = await response.json();
+            updateTable(log, 'logTable');
+            setTimeout(fetchLogData, 500);  // 每500毫秒更新一次
+        }
+
+        function updateTable(data, tableId) {
+            const tbody = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+            tbody.innerHTML = '';  // 清除旧数据
+            for (const key in data) {
                 const row = tbody.insertRow();
                 const cellKey = row.insertCell(0);
                 const cellValue = row.insertCell(1);
                 cellKey.textContent = key;
-                cellValue.textContent = logs[key] || 'N/A';
+                cellValue.textContent = data[key] || 'N/A';
+                // 根据字段类型应用样式
+                if (key.toLowerCase() === 'status') {
+                    cellValue.className = `status-cell ${getStatusClass(data[key])}`;
+                } else if (key.toLowerCase() === 'speed') {
+                    let speedValue = parseFloat(data[key]);
+                    let percentage = Math.min(speedValue / 150 * 100, 100);  // 计算百分比
+                    cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${data[key]}</div>`;
+                }
             }
-            setTimeout(fetchLogData, 500);
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'RTK FIX': return 'rtk-fix';
+                case 'RTK FLOAT': return 'rtk-float';
+                case 'DGPS': return 'DGPS-fix';
+                case 'Normal Mode 3D': return 'normal-3d-fix';
+                case 'DR FIX': return 'dr-fix';
+                default: return 'unknown';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
