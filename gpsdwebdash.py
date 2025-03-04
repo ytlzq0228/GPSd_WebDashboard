@@ -99,17 +99,17 @@ def index():
 
 @app.route('/snr-data')
 def snr_data():
-	print({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
+	#print({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 	return jsonify({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 
 @app.route('/tpv-data')
 def tpv_data():
-	print(gps_data_cache['TPV'])
+	#print(gps_data_cache['TPV'])
 	return jsonify(gps_data_cache['TPV'])
 
 @app.route('/path-data')
 def path_data():
-	print(gps_data_cache['Path'])
+	#print(gps_data_cache['Path'])
 	return jsonify(gps_data_cache['Path'])
 
 @app.route('/log-data')
@@ -117,11 +117,11 @@ def log_data():
 	try:
 		log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
 		updatetime_diff=int(time.time()-log_file_update_time)
-		#print(updatetime_diff)
+		print(updatetime_diff)
 		log_file_data={}
 		log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time)
 		log_file_data['更新延迟']=updatetime_diff
-		#print(log_file_data)
+		print(log_file_data)
 		return jsonify(log_file_data)
 	except Exception as e:
 		print(f"Error fetching log file data: {e}")
