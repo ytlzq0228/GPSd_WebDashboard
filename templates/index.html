@@ -139,14 +139,16 @@
             setTimeout(fetchTrackData, 500);  // 每500毫秒更新一次
         }
 
-        function updateTrackMap(lat, lon) {
+        async function updateTrackMap(lat, lon) {
+            const point = { x: lon, y: lat }; // 创建新点
             if (!trackChart) {
+                // 初始化轨迹图
                 trackChart = new Chart(ctxTrack, {
                     type: 'scatter',
                     data: {
                         datasets: [{
                             label: 'GPS Track',
-                            data: [{ x: lon, y: lat }],
+                            data: [point],
                             backgroundColor: 'rgba(255, 99, 132, 1)'
                         }]
                     },
@@ -154,16 +156,26 @@
                         scales: {
                             x: {
                                 type: 'linear',
-                                position: 'bottom'
+                                position: 'bottom',
+                                min: lon - 0.01, // 设置中心点左右各0.01度范围
+                                max: lon + 0.01
                             },
                             y: {
-                                beginAtZero: false
+                                min: lat - 0.01, // 设置中心点上下各0.01度范围
+                                max: lat + 0.01
                             }
                         }
                     }
                 });
             } else {
-                trackChart.data.datasets[0].data.push({ x: lon, y: lat });
+                // 添加新的点并更新轨迹图
+                trackChart.data.datasets[0].data.push(point);
+                // 更新比例尺，使最新的点位于中心
+                trackChart.options.scales.x.min = lon - 0.01;
+                trackChart.options.scales.x.max = lon + 0.01;
+                trackChart.options.scales.y.min = lat - 0.01;
+                trackChart.options.scales.y.max = lat + 0.01;
+        
                 trackChart.update();
             }
         }
