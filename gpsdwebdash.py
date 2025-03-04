@@ -89,6 +89,7 @@ def tpv_data():
 			if i in tpv_data:
 				status_data[i]=tpv_data[i]
 		# 处理 GNSS 状态
+		mode_map={0: "Unknown",1: "no fix",2: "Normal Mode 2D",3: "Normal Mode 3D"}
 		status_map = {
 			0: "Unknown",
 			1: "Normal",
@@ -101,7 +102,10 @@ def tpv_data():
 			8: "Simulated",
 			9: "P(Y)",
 		}
-		status_data['status'] = status_map.get(status_data.get('status',1), "Unknown")
+		if status_data.get('status',1) ==1:
+			status_data['status'] = mode_map.get(status_data.get('mode',0), "Unknown")
+		else:
+			status_data['status'] = status_map.get(status_data.get('status',1), "Unknown")
 		return jsonify(status_data)
 	except Exception as e:
 		print(f"Error fetching GPSd data: {e}")
