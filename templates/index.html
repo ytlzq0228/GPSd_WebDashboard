@@ -161,13 +161,13 @@
             const logs = await response.json();
             const tbody = document.getElementById('logTable').getElementsByTagName('tbody')[0];
             tbody.innerHTML = '';
-            logs.forEach(log => {
+            for (const key in logs) {
                 const row = tbody.insertRow();
                 const cellKey = row.insertCell(0);
                 const cellValue = row.insertCell(1);
-                cellKey.textContent = log.timestamp;
-                cellValue.textContent = log.message;
-            });
+                cellKey.textContent = key;
+                cellValue.textContent = logs[key] || 'N/A';
+            }
             setTimeout(fetchLogData, 500);
         }
 
