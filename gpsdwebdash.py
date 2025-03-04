@@ -73,7 +73,7 @@ def snr_data():
 						if 'ss' in sat:
 							sat_name=get_constellation(sat['PRN'])
 							satellites_data[sat_name] = sat['ss']
-			if time.time() - start_time > 1:  # 设置10秒超时，避免无限循环
+			if time.time() - start_time > 2:  # 设置10秒超时，避免无限循环
 				break
 		satellites_data={'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in satellites_data.items()]}
 		return jsonify(satellites_data)
@@ -120,7 +120,7 @@ def tpv_data():
 			status_data['status'] = mode_map.get(tpv_data.get('mode',0), "Unknown")
 		else:
 			status_data['status'] = status_map.get(tpv_data.get('status',1), "Unknown")
-		status_data['speed']=status_data['speed']*3.6 #米/秒转公里/小时
+		status_data['speed']="%.2f"%status_data['speed']*3.6 #米/秒转公里/小时
 		#status_data['speed']=100 #test speed only
 		return jsonify(status_data)
 	except Exception as e:
