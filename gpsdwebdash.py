@@ -106,7 +106,7 @@ def index():
 def snr_data():
 	#print(len(gps_data_cache['SNR']))
 	#print({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
-	return jsonify({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
+	return jsonify(gps_data_cache['SNR'])
 
 @app.route('/tpv-data')
 def tpv_data():
