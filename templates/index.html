@@ -140,15 +140,14 @@
         }
 
         async function updateTrackMap(lat, lon) {
-            const point = { x: lon, y: lat }; // 创建新点
+            const range = 0.000091;  // 计算得到的视图范围
             if (!trackChart) {
-                // 初始化轨迹图
                 trackChart = new Chart(ctxTrack, {
                     type: 'scatter',
                     data: {
                         datasets: [{
                             label: 'GPS Track',
-                            data: [point],
+                            data: [{ x: lon, y: lat }],
                             backgroundColor: 'rgba(255, 99, 132, 1)'
                         }]
                     },
@@ -157,29 +156,26 @@
                             x: {
                                 type: 'linear',
                                 position: 'bottom',
-                                min: lon - 0.01, // 设置中心点左右各0.01度范围
-                                max: lon + 0.01
+                                min: lon - range,
+                                max: lon + range
                             },
                             y: {
-                                min: lat - 0.01, // 设置中心点上下各0.01度范围
-                                max: lat + 0.01
+                                min: lat - range,
+                                max: lat + range
                             }
                         }
                     }
                 });
             } else {
-                // 添加新的点并更新轨迹图
-                trackChart.data.datasets[0].data.push(point);
-                // 更新比例尺，使最新的点位于中心
-                trackChart.options.scales.x.min = lon - 0.01;
-                trackChart.options.scales.x.max = lon + 0.01;
-                trackChart.options.scales.y.min = lat - 0.01;
-                trackChart.options.scales.y.max = lat + 0.01;
+                trackChart.data.datasets[0].data.push({ x: lon, y: lat });
+                trackChart.options.scales.x.min = lon - range;
+                trackChart.options.scales.x.max = lon + range;
+                trackChart.options.scales.y.min = lat - range;
+                trackChart.options.scales.y.max = lat + range;
         
                 trackChart.update();
             }
         }
-
 
         async function fetchTPVData() {
             const response = await fetch('/tpv-data');
