@@ -83,6 +83,7 @@ def tpv_data():
 				tpv_data=data
 				break
 			time.sleep(0.01)  # 避免 CPU 100% 占用
+		print(tpv_data)
 		status_data={}
 		for i in ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'status', 'time', 'speed']:
 			if i in tpv_data:
