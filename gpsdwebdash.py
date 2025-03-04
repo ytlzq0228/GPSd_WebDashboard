@@ -140,8 +140,11 @@ def tpv_data():
 @app.route('/log_data')
 def log_data():
 	try:
+		log_file_update_time=get_last_modified_time(APRS_LOG_FILE)
+		updatetime_diff=time.time()-log_file_update_time
 		log_file_data={}
-		log_file_data['更新时间']=get_last_modified_time(APRS_LOG_FILE)
+		log_file_data['更新时间']=log_file_update_time
+		log_file_data['更新延迟']=updatetime_diff
 		print(jsonify(log_file_data))
 		return jsonify(log_file_data)
 	except Exception as e:
