@@ -68,7 +68,6 @@ def update_gps_data():
 				if data_json.get('class') == 'SKY' and 'satellites' in data_json:
 					for i in data_json['satellites']:
 						gps_data_cache['SNR']['satellites'].append({'PRN': i['PRN'], 'ss': i['ss']})
-				print(gps_data_cache['SNR'])
 				# 更新TPV数据，保留了你的细节处理
 				if data_json.get('class') == 'TPV':
 					status_data={}
@@ -100,7 +99,7 @@ def index():
 
 @app.route('/snr-data')
 def snr_data():
-	#print(gps_data_cache['SNR'])
+	print(gps_data_cache['SNR'])
 	#print({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 	return jsonify(gps_data_cache['SNR'])
 
