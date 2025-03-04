@@ -73,7 +73,7 @@ def update_gps_data():
 				# 更新TPV数据，保留了你的细节处理
 				if data_json.get('class') == 'TPV':
 					status_data={}
-					for i in ['alt', 'class', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'time', 'speed']:
+					for i in ['alt', 'class', 'track', 'magtrack', 'magvar', 'time', 'speed']:
 						if i in data_json:
 							status_data[i]=data_json[i]
 					# 处理 GNSS 状态
@@ -114,11 +114,18 @@ def path_data():
 
 @app.route('/log-data')
 def log_data():
-	log_file_update_time = os.path.getmtime(APRS_LOG_FILE)
-	return jsonify({
-		'更新时间': datetime.fromtimestamp(log_file_update_time).strftime('%Y-%m-%d %H:%M:%S'),
-		'更新延迟': int(time.time() - log_file_update_time)
-	})
+	try:
+		log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
+		updatetime_diff=int(time.time()-log_file_update_time)
+		#print(updatetime_diff)
+		log_file_data={}
+		log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time)
+		log_file_data['更新延迟']=updatetime_diff
+		#print(log_file_data)
+		return jsonify(log_file_data)
+	except Exception as e:
+		print(f"Error fetching log file data: {e}")
+		return None
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0', port=5000)
