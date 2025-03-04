@@ -57,68 +57,32 @@
             box-sizing: border-box;
             white-space: nowrap;
         }
-        #map {
-            height: 40vh;
-            width: 90vw;
-            background-color: #eee; /* A light gray background to see the canvas */
-        }
     </style>
 </head>
 <body>
     <canvas id="snrChart"></canvas>
-    <canvas id="map"></canvas>
     <div id="dataTables">
         <table id="tpvTable">
-            <thead>
-                <tr><th>TPV Data</th><th>Value</th></tr>
-            </thead>
             <tbody>
                 <!-- TPV 数据将被填充到这里 -->
             </tbody>
         </table>
         <table id="logTable">
-            <thead>
-                <tr><th>Log Data</th><th>Value</th></tr>
-            </thead>
             <tbody>
                 <!-- 日志数据将被填充到这里 -->
             </tbody>
         </table>
     </div>
+
     <script>
         const ctx = document.getElementById('snrChart').getContext('2d');
         let snrChart;
-        let path = [];
 
         async function fetchSNRData() {
             const response = await fetch('/snr-data');
             const data = await response.json();
             updateChart(data.satellites);
             setTimeout(fetchSNRData, 500);  // 每500毫秒更新一次
-        }
-
-        async function fetchPathData() {
-            const response = await fetch('/path-data');
-            const { lat, lon } = await response.json();
-            path.push({ lat, lon });
-            updateMap();
-            setTimeout(fetchPathData, 500);
-        }
-
-        function updateMap() {
-            const ctx = document.getElementById('map').getContext('2d');
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clear previous drawings
-            ctx.beginPath();
-            path.forEach((point, index) => {
-                const x = ctx.canvas.width / 2 + point.lon * 10000; // Scale longitude
-                const y = ctx.canvas.height / 2 - point.lat * 10000; // Scale latitude
-                if (index === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            });
-            ctx.stroke();
         }
 
         function updateChart(satellites) {
@@ -165,6 +129,20 @@
             }
         }
 
+        async function fetchTPVData() {
+            const response = await fetch('/tpv-data');
+            const tpv = await response.json();
+            updateTable(tpv, 'tpvTable');
+            setTimeout(fetchTPVData, 500);  // 每500毫秒更新一次
+        }
+
+        async function fetchLogData() {
+            const response = await fetch('/log_data');
+            const log = await response.json();
+            updateTable(log, 'logTable');
+            setTimeout(fetchLogData, 500);  // 每500毫秒更新一次
+        }
+
         function updateTable(data, tableId) {
             const tbody = document.getElementById(tableId).getElementsByTagName('tbody')[0];
             tbody.innerHTML = '';  // 清除旧数据
@@ -173,6 +151,10 @@
                 const cellKey = row.insertCell(0);
                 const cellValue = row.insertCell(1);
                 cellKey.textContent = key;
+
+                //cellValue.textContent = data[key] || 'N/A';
+
+                // 检查数据是否为null或undefined，而不是falsy值
                 cellValue.textContent = data[key] !== null && data[key] !== undefined ? data[key] : 'N/A';
 
                 // 根据字段类型应用样式
@@ -209,7 +191,6 @@
             fetchSNRData();
             fetchTPVData();
             fetchLogData();
-            fetchPathData();
         });
     </script>
 </body>
