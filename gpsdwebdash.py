@@ -131,7 +131,7 @@ def tpv_data():
 def log_data():
 	try:
 		log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
-		updatetime_diff=time.time()-log_file_update_time
+		updatetime_diff=int(time.time()-log_file_update_time)
 		log_file_data={}
 		log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time)
 		log_file_data['更新延迟']=updatetime_diff
