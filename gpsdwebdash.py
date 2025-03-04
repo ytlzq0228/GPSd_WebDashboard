@@ -72,7 +72,7 @@ def update_gps_data():
 					else:
 						status_data['status'] = status_map.get(data_json.get('status',1), "Unknown")
 					status_data['speed']="%.2f"%(status_data['speed']*3.6) #米/秒转公里/小时
-								gps_data_cache['TPV'] = status_data
+					gps_data_cache['TPV'] = status_data
 		time.sleep(1)  # Reduce CPU usage
 		print(gps_data_cache)
 
