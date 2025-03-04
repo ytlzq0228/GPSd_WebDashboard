@@ -2,6 +2,16 @@ from flask import Flask, jsonify, render_template
 from gps3 import gps3
 import json
 import time
+import configparser
+from save_log import save_log
+
+CONFIG_FILE='/etc/GPS_config.ini'
+config = configparser.ConfigParser()
+config.read(CONFIG_FILE)
+
+LOG_FILE_PATH=config['SFTP_Config']['LOCAL_LOG_FILE_PATH']
+SSID=config['SSID_Config']['SSID']
+APRS_LOG_FILE = f"{LOG_FILE_PATH}/{datetime.now().strftime('%Y-%m-%d')}-GPS-{SSID}.log"
 
 app = Flask(__name__)
 
@@ -32,6 +42,19 @@ def get_constellation(prn):
 		if prn in prns:
 			return f"{constellation}_{prn}"
 	return f"Unknow_{prn}"
+
+
+def get_last_modified_time(file_path):
+    try:
+        # 获取文件的最后修改时间戳
+        modification_time = os.path.getmtime(file_path)
+        # 将时间戳转换为可读的格式
+        readable_time = datetime.fromtimestamp(modification_time)
+        return readable_time
+    except FileNotFoundError:
+        return "File not found"
+
+# 指定文件路径
 
 
 @app.route('/')
@@ -115,7 +138,8 @@ def tpv_data():
 @app.route('/log_data')
 def log_data():
 	try:
-		log_file_data={0: "Unknown",1: "no fix",2: "Normal Mode 2D",3: "Normal Mode 3D"}
+		log_file_data={}
+		log_file_data['更新时间']=get_last_modified_time(APRS_LOG_FILE)
 		return jsonify(log_file_data)
 	except Exception as e:
 		print(f"Error fetching log file data: {e}")
