@@ -88,7 +88,7 @@ def update_gps_data():
 					for i in ['lat', 'lon']:
 						if i in data_json:
 							gps_data_cache['Path'][i]=data_json[i]
-		time.sleep(1)  # Reduce CPU usage
+		time.sleep(0.5)  # Reduce CPU usage
 
 # 启动后台线程更新数据
 threading.Thread(target=update_gps_data, daemon=True).start()
@@ -99,14 +99,17 @@ def index():
 
 @app.route('/snr-data')
 def snr_data():
+	print({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 	return jsonify({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 
 @app.route('/tpv-data')
 def tpv_data():
+	print(gps_data_cache['TPV'])
 	return jsonify(gps_data_cache['TPV'])
 
 @app.route('/path-data')
 def path_data():
+	print(gps_data_cache['Path'])
 	return jsonify(gps_data_cache['Path'])
 
 @app.route('/log-data')
