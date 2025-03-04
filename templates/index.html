@@ -151,7 +151,12 @@
                 const cellKey = row.insertCell(0);
                 const cellValue = row.insertCell(1);
                 cellKey.textContent = key;
+
                 //cellValue.textContent = data[key] || 'N/A';
+
+                // 检查数据是否为null或undefined，而不是falsy值
+                cellValue.textContent = data[key] !== null && data[key] !== undefined ? data[key] : 'N/A';
+
                 // 根据字段类型应用样式
                 if (key.toLowerCase() === 'status') {
                     cellValue.className = `status-cell ${getStatusClass(data[key])}`;
