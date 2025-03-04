@@ -37,6 +37,11 @@
             text-align: center;
             font-weight: bold;
         }
+        .update-delay {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em; /* Larger font size */
+        }
         .word_darkgreen { background-color: darkgreen; color: white; }
         .word_green { background-color: green; color: white; }
         .word_lightgreen { background-color: lightgreen; color: black; }
@@ -172,8 +177,8 @@
         }
 
         function getDelayClass(delay) {
-            if (delay < 3) return 'word_green';
-            if (delay < 5) return 'word_yellow';
+            if (delay < 5) return 'word_green';
+            if (delay < 10) return 'word_yellow';
             return 'word_red';
         }
 
