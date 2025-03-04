@@ -109,18 +109,18 @@
                         scales: {
                             y: {
                                 beginAtZero: true
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 10 // 减小字号到 10
+                                    }
+                                }
                             }
                         },
                         plugins: {
                             datalabels: {
-                                color: '#ffffff',
-                                display: true,
-                                font: {
-                                    weight: 'bold'
-                                },
-                                formatter: (value, context) => {
-                                    return `${value} dB`;  // 在柱状图顶端标注数值
-                                }
+                                display: false // 不显示数据标签
                             }
                         }
                     }
