@@ -9,7 +9,7 @@ echo "Code pulled on $(date)"
 cp -r * /etc/GPSd_WebDashboard
 echo "Copy to /etc finished"
 
-systemctl restart aprs_reporter.service
+systemctl restart gpsd_webdashboard.service
 
 sync ; sudo sync ; sudo sync ; sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot
 
