@@ -119,7 +119,7 @@ def log_data():
 		updatetime_diff=int(time.time()-log_file_update_time)
 		#print(updatetime_diff)
 		log_file_data={}
-		log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time)
+		log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
 		log_file_data['更新延迟']=updatetime_diff
 		#print(log_file_data)
 		return jsonify(log_file_data)
