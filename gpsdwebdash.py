@@ -50,6 +50,7 @@ def update_gps_data():
                     status_data['speed'] = f"{float(status_data['speed'])*3.6:.2f}" if 'speed' in status_data else "N/A"
                     gps_data_cache['TPV'] = status_data
         time.sleep(1)  # Reduce CPU usage
+        print(gps_data_cache)
 
 # 启动后台线程更新数据
 threading.Thread(target=update_gps_data, daemon=True).start()
