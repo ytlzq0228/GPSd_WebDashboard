@@ -5,24 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS Data Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 引入数据标签插件 -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
         canvas {
-            max-height: 20vh; /* 控制柱状图的高度 */
-            width: 90vw; /* 控制宽度 */
+            max-height: 20vh; /* 控制柱状图的高度为视口高度的20% */
+            width: 90vw; /* 控制宽度为视口宽度的90% */
             margin: auto;
         }
         table {
-            max-width: 50vw; /* 控制表格的最大宽度 */
+            width: 50vw; /* 表格宽度调整为视口宽度的50% */
+            margin: auto;
             border-collapse: collapse;
-            margin-top: 20px;
         }
         td, th {
             border: 1px solid #ddd;
@@ -46,12 +40,6 @@
 <body>
     <canvas id="snrChart"></canvas>
     <table id="tpvTable">
-        <thead>
-            <tr>
-                <th>Key</th>
-                <th>Value</th>
-            </tr>
-        </thead>
         <tbody>
             <!-- TPV 数据将被填充到这里 -->
         </tbody>
@@ -65,7 +53,7 @@
             const response = await fetch('/snr-data');
             const data = await response.json();
             updateChart(data.satellites);
-            setTimeout(fetchSNRData, 500);  // 每500ms更新一次
+            setTimeout(fetchSNRData, 500);  // 每500毫秒更新一次
         }
 
         function updateChart(satellites) {
@@ -125,6 +113,7 @@
                 cellValue.textContent = tpv[key] || 'N/A';
 
                 if (key.toLowerCase() === 'status') {
+                    // 单独对状态字段着色
                     cellValue.className = `status-cell ${
                         tpv[key] === 'RTK FIX' ? 'rtk-fix' :
                         tpv[key] === 'RTK FLOAT' ? 'rtk-float' :
@@ -133,4 +122,13 @@
                     }`;
                 }
             }
-            setTimeout(fetchTPVData, 
+            setTimeout(fetchTPVData, 500);  // 每500毫秒更新一次
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchSNRData();
+            fetchTPVData();
+        });
+    </script>
+</body>
+</html>
