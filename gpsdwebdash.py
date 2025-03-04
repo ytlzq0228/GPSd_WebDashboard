@@ -64,7 +64,6 @@ def update_gps_data():
 					gps_data_cache['SNR'] = {
 						get_constellation(sat['PRN']): sat['ss'] for sat in data_stream.SKY['satellites'] if 'ss' in sat
 					}
-				print(gps_data_cache['SNR'])
 				try:
 					data_json = json.loads(new_data)
 				except json.JSONDecodeError:
@@ -100,6 +99,7 @@ def index():
 
 @app.route('/snr-data')
 def snr_data():
+	print(gps_data_cache['SNR'])
 	#print({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 	return jsonify({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 
