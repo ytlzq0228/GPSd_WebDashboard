@@ -72,7 +72,7 @@ def update_gps_data():
 				# 更新TPV数据，保留了你的细节处理
 				if data_json.get('class') == 'TPV':
 					status_data={}
-					for i in ['alt', 'class', 'track', 'magtrack', 'magvar', 'time', 'speed']:
+					for i in ['alt', 'track', 'magtrack', 'magvar', 'time', 'speed']:
 						if i in data_json:
 							status_data[i]=data_json[i]
 					# 处理 GNSS 状态
@@ -84,6 +84,7 @@ def update_gps_data():
 						status_data['status'] = status_map.get(data_json.get('status',1), "Unknown")
 					status_data['speed']="%.2f"%(status_data['speed']*3.6) #米/秒转公里/小时
 					status_data['time']=datetime.fromisoformat(status_data['time'].replace('Z', '+00:00')).strftime('%Y-%m-%d %H:%M:%S')
+					status_data['Sat_Qty']=len(gps_data_cache['SNR'])
 					gps_data_cache['TPV'] = status_data
 					for i in ['lat', 'lon']:
 						if i in data_json:
@@ -99,7 +100,7 @@ def index():
 
 @app.route('/snr-data')
 def snr_data():
-	print(len(gps_data_cache['SNR']))
+	#print(len(gps_data_cache['SNR']))
 	#print({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 	return jsonify({'satellites': [{'PRN': prn, 'ss': ss} for prn, ss in gps_data_cache['SNR'].items()]})
 
