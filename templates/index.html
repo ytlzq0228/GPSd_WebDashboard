@@ -151,7 +151,7 @@
                 const cellKey = row.insertCell(0);
                 const cellValue = row.insertCell(1);
                 cellKey.textContent = key;
-                cellValue.textContent = data[key] || 'N/A';
+                //cellValue.textContent = data[key] || 'N/A';
                 // 根据字段类型应用样式
                 if (key.toLowerCase() === 'status') {
                     cellValue.className = `status-cell ${getStatusClass(data[key])}`;
