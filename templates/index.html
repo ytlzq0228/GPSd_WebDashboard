@@ -192,7 +192,7 @@
         }
 
         async function fetchLogData() {
-            const response = await fetch('/log_data');
+            const response = await fetch('/log-data');
             const log = await response.json();
             updateTable(log, 'logTable');
             setTimeout(fetchLogData, 500);  // 每500毫秒更新一次
