@@ -36,13 +36,16 @@
         .normal-3d-fix { background-color: lightgreen; color: black; }
         .dr-fix { background-color: blue; color: white; }
         .unknown { background-color: yellow; color: black; }
-        .speed-bar { /* 新增样式 */
+        .speed-bar {
             height: 100%;
             background-color: lightblue;
-            text-align: right;
-            padding-right: 5px;
-            box-sizing: border-box;
             color: black;
+            line-height: 2; /* 调整行高以垂直居中文本 */
+            width: 0%; /* 初始化宽度 */
+            transition: width 0.5s ease; /* 平滑过渡动画 */
+            padding: 0 5px; /* 文本内边距 */
+            box-sizing: border-box;
+            white-space: nowrap; /* 防止文本换行 */
         }
     </style>
 </head>
