@@ -85,7 +85,7 @@
             const response = await fetch('/snr-data');
             const data = await response.json();
             updateChart(data.satellites);
-            setTimeout(fetchSNRData, 500);  // 每500毫秒更新一次
+            setTimeout(fetchSNRData, 1000);  // 每1000毫秒更新一次
         }
 
         function updateChart(satellites) {
