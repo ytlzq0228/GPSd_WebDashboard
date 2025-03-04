@@ -48,7 +48,7 @@ def get_constellation(prn):
 
 # 定义全局缓存
 gps_data_cache = {
-	'SNR': {},
+	'SNR': {'satellites':[]},
 	'TPV': {},
 	'Path': {},
 	'Log': {}
@@ -61,9 +61,11 @@ def update_gps_data():
 				data_stream.unpack(new_data)
 				# 更新SNR数据
 				if 'satellites' in data_stream.SKY:
-					gps_data_cache['SNR'] = {
-						get_constellation(sat['PRN']): sat['ss'] for sat in data_stream.SKY['satellites'] if 'ss' in sat
-					}
+					for i in data_stream.SKY['satellites']:
+						gps_data_cache['SNR']['satellites'].append({'PRN': i['PRN'], 'ss': i['ss']})
+					#gps_data_cache['SNR'] = {
+					#	get_constellation(sat['PRN']): sat['ss'] for sat in data_stream.SKY['satellites'] if 'ss' in sat
+					#}
 				try:
 					data_json = json.loads(new_data)
 				except json.JSONDecodeError:
