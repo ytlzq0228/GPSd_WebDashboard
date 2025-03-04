@@ -42,7 +42,7 @@ def update_gps_data():
                         get_constellation(sat['PRN']): sat['ss'] for sat in data_stream.SKY['satellites'] if 'ss' in sat
                     }
                 # 更新TPV数据，保留了你的细节处理
-                if data_stream.TPV['class'] == 'TPV':
+                if data_stream.TPV:
                     status_data = {key: data_stream.TPV[key] for key in ['alt', 'lat', 'lon', 'track', 'magtrack', 'magvar', 'time', 'speed'] if key in data_stream.TPV}
                     mode_map = {0: "Unknown", 1: "no fix", 2: "Normal Mode 2D", 3: "Normal Mode 3D"}
                     status_map = {0: "Unknown", 1: "Normal", 2: "DGPS", 3: "RTK FIX", 4: "RTK FLOAT", 5: "DR FIX", 6: "GNSSDR", 7: "Time (surveyed)", 8: "Simulated", 9: "P(Y)"}
