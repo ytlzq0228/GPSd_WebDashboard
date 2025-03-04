@@ -139,7 +139,7 @@
             const response = await fetch('/path-data');
             const data = await response.json();
             updateTrackMap(data.lat, data.lon);
-            setTimeout(fetchTrackData, 500);  // 每500毫秒更新一次
+            setTimeout(fetchTrackData, 1000);  // 每500毫秒更新一次
         }
 
         async function updateTrackMap(lat, lon) {
@@ -191,14 +191,14 @@
             const response = await fetch('/tpv-data');
             const tpv = await response.json();
             updateTable(tpv, 'tpvTable');
-            setTimeout(fetchTPVData, 500);  // 每500毫秒更新一次
+            setTimeout(fetchTPVData, 1000);  // 每500毫秒更新一次
         }
 
         async function fetchLogData() {
             const response = await fetch('/log-data');
             const log = await response.json();
             updateTable(log, 'logTable');
-            setTimeout(fetchLogData, 500);  // 每500毫秒更新一次
+            setTimeout(fetchLogData, 1000);  // 每500毫秒更新一次
         }
 
         function updateTable(data, tableId) {
