@@ -36,6 +36,14 @@
         .normal-3d-fix { background-color: lightgreen; color: black; }
         .dr-fix { background-color: blue; color: white; }
         .unknown { background-color: yellow; color: black; }
+        .speed-bar { /* 新增样式 */
+            height: 100%;
+            background-color: lightblue;
+            text-align: right;
+            padding-right: 5px;
+            box-sizing: border-box;
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -122,6 +130,11 @@
                         tpv[key] === 'Normal Mode 3D' ? 'normal-3d-fix' :
                         tpv[key] === 'DR FIX' ? 'dr-fix' : 'unknown'
                     }`;
+                } else if (key.toLowerCase() === 'speed') {
+                    // 对速度字段添加进度条
+                    let speedValue = parseFloat(tpv[key]);
+                    let percentage = Math.min(speedValue / 150 * 100, 100);  // 计算百分比，最大不超过100%
+                    cellValue.innerHTML = `<div class="speed-bar" style="width:${percentage}%;">${tpv[key]}</div>`;
                 }
             }
             setTimeout(fetchTPVData, 500);  // 每500毫秒更新一次
