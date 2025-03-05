@@ -95,6 +95,7 @@ def update_gps_data():
 					for i in ['lat', 'lon', 'speed']:
 						if i in data_json:
 							gps_data_cache['Path'][i]=data_json[i]
+					#阶梯化speed，不连续变化，避免speed频繁变化影响地图缩放
 					step=5
 					gps_data_cache['Path']['speed']=max((round(gps_data_cache['Path']['speed'] / step) * step),1)
 
