@@ -148,6 +148,9 @@
         }
 
         async function updateTrackMap(lat, lon, speed) {
+            const currentTime = Date.now(); // 获取当前时间的时间戳
+            const retentionPeriod = 600000; // 10分钟的毫秒数
+        
             const canvas = document.getElementById('trackMap');
             const ctx = canvas.getContext('2d');
             const width = canvas.width;
@@ -157,14 +160,14 @@
             const distance = speed * 60;  // 速度(m/s) * 时间(s)
             const range = distance / 111000;  // 转换距离到度数，因为1度大约111公里，即111000米
             const lonRange = range * aspectRatio;  // 调整经度范围以匹配画布的宽高比
-
+        
             if (!trackChart) {
-                trackChart = new Chart(ctxTrack, {
+                trackChart = new Chart(ctx, {
                     type: 'scatter',
                     data: {
                         datasets: [{
                             label: 'GPS Track',
-                            data: [{ x: lon, y: lat }],
+                            data: [{ x: lon, y: lat, time: currentTime }],
                             backgroundColor: 'rgba(255, 99, 132, 1)'
                         }]
                     },
@@ -184,7 +187,12 @@
                     }
                 });
             } else {
-                trackChart.data.datasets[0].data.push({ x: lon, y: lat });
+                // 添加新的数据点
+                trackChart.data.datasets[0].data.push({ x: lon, y: lat, time: currentTime });
+                // 清理10分钟之前的数据点
+                trackChart.data.datasets[0].data = trackChart.data.datasets[0].data.filter(point => currentTime - point.time < retentionPeriod);
+        
+                // 更新图表显示范围
                 trackChart.options.scales.x.min = lon - lonRange;
                 trackChart.options.scales.x.max = lon + lonRange;
                 trackChart.options.scales.y.min = lat - range;
