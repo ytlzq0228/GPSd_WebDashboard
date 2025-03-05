@@ -184,9 +184,6 @@
                                 max: lat + range
                             }
                         }
-                    },
-                    animations: {
-                        duration: 0 // 设置动画持续时间为0，即取消动画效果
                     }
                 });
             } else {
@@ -201,9 +198,7 @@
                 trackChart.options.scales.y.min = lat - range;
                 trackChart.options.scales.y.max = lat + range;
         
-                trackChart.update({
-                    duration: 0 // 确保更新时也无动画效果
-                });
+                trackChart.update();
             }
         }
 
