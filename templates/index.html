@@ -157,7 +157,7 @@
             const height = canvas.height;
             const aspectRatio = width / height;
             // 计算60秒内的移动距离转换成度
-            const distance = speed * 60;  // 速度(m/s) * 时间(s)
+            const distance = speed * 30;  // 速度(m/s) * 时间(s)
             const range = distance / 111000;  // 转换距离到度数，因为1度大约111公里，即111000米
             const lonRange = range * aspectRatio;  // 调整经度范围以匹配画布的宽高比
         
