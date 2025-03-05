@@ -174,8 +174,8 @@
                     options: {
                         scales: {
                             x: {
-                                //type: 'linear',
-                                //position: 'bottom',
+                                type: 'linear',
+                                position: 'bottom',
                                 min: lon - lonRange,
                                 max: lon + lonRange
                             },
@@ -183,6 +183,23 @@
                                 min: lat - range,
                                 max: lat + range
                             }
+                        }
+                    },
+                    animations: {
+                        radius: {
+                            duration: 400,
+                            easing: 'linear',
+                            loop: false
+                        },
+                        x: {
+                            type: 'number',
+                            easing: 'linear',
+                            duration: 500 // X 轴动画的持续时间
+                        },
+                        y: {
+                            type: 'number',
+                            easing: 'linear',
+                            duration: 500 // Y 轴动画的持续时间
                         }
                     }
                 });
