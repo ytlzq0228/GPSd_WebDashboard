@@ -143,17 +143,19 @@
         async function fetchTrackData() {
             const response = await fetch('/path-data');
             const data = await response.json();
-            updateTrackMap(data.lat, data.lon);
+            updateTrackMap(data.lat, data.lon, data.speed);
             setTimeout(fetchTrackData, 1000);  // 每500毫秒更新一次
         }
 
-        async function updateTrackMap(lat, lon) {
+        async function updateTrackMap(lat, lon, speed) {
             const canvas = document.getElementById('trackMap');
             const ctx = canvas.getContext('2d');
             const width = canvas.width;
             const height = canvas.height;
             const aspectRatio = width / height;
-            const range = 0.001;  // 计算得到的视图范围
+            // 计算60秒内的移动距离转换成度
+            const distance = speed * 60;  // 速度(m/s) * 时间(s)
+            const range = distance / 111000;  // 转换距离到度数，因为1度大约111公里，即111000米
             const lonRange = range * aspectRatio;  // 调整经度范围以匹配画布的宽高比
 
             if (!trackChart) {

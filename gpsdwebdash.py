@@ -91,9 +91,13 @@ def update_gps_data():
 					status_data['speed']="%.2f"%(status_data['speed']*3.6) #米/秒转公里/小时
 					status_data['time']=datetime.fromisoformat(status_data['time'].replace('Z', '+00:00')).strftime('%Y-%m-%d %H:%M:%S')
 					gps_data_cache['TPV'] = status_data
-					for i in ['lat', 'lon']:
+					#写入Path数据
+					for i in ['lat', 'lon', 'speed']:
 						if i in data_json:
 							gps_data_cache['Path'][i]=data_json[i]
+					step=5
+					gps_data_cache['Path']['speed']=max((round(gps_data_cache['Path']['speed'] / step) * step),1)
+
 		time.sleep(0.5)  # Reduce CPU usage
 
 # 启动后台线程更新数据
