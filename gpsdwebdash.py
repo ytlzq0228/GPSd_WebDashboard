@@ -97,7 +97,7 @@ def update_gps_data():
 					#阶梯化speed，不连续变化，避免speed频繁变化影响地图缩放
 					step=5
 					#gps_data_cache['Path']['speed']=5 #test only
-					gps_data_cache['Path']['speed']=max((round(gps_data_cache['Path']['speed'] / step) * step),1)
+					gps_data_cache['Path']['speed']=max((round(gps_data_cache['Path']['speed'] / step) * step),0.5)
 
 		time.sleep(0.5)  # Reduce CPU usage
 
