@@ -201,7 +201,9 @@
                 trackChart.options.scales.y.min = lat - range;
                 trackChart.options.scales.y.max = lat + range;
         
-                trackChart.update();
+                trackChart.update({
+                    duration: 0 // 确保更新时也无动画效果
+                });
             }
         }
 
