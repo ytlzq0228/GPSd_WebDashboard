@@ -17,6 +17,7 @@ SSID = config['SSID_Config']['SSID']
 APRS_LOG_FILE = f"{LOG_FILE_PATH}/{datetime.now().strftime('%Y-%m-%d')}-GPS-{SSID}.log"
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 GPIO_PIN=21
 GPIO.setup(GPIO_PIN, GPIO.OUT)
 
@@ -107,8 +108,10 @@ def update_gps_data():
 					step=5
 					#gps_data_cache['Path']['speed']=5 #test only
 					gps_data_cache['Path']['speed']=max((round(gps_data_cache['Path']['speed'] / step) * step),0.5)
+		time.sleep(0.5)
 
-
+def update_log_file_data():
+	while True:
 		try:
 			if os.path.exists(APRS_LOG_FILE):
 				log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
@@ -130,6 +133,7 @@ def update_gps_data():
 
 # 启动后台线程更新数据
 threading.Thread(target=update_gps_data, daemon=True).start()
+threading.Thread(target=update_log_file_data, daemon=True).start()
 
 @app.route('/')
 def index():
