@@ -17,7 +17,8 @@ SSID = config['SSID_Config']['SSID']
 APRS_LOG_FILE = f"{LOG_FILE_PATH}/{datetime.now().strftime('%Y-%m-%d')}-GPS-{SSID}.log"
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(21, GPIO.OUT)
+GPIO_PIN=21
+GPIO.setup(GPIO_PIN, GPIO.OUT)
 
 
 app = Flask(__name__)
@@ -142,9 +143,9 @@ def log_data():
 			log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
 			log_file_data['更新延迟']=updatetime_diff
 			if updatetime_diff<3:
-				GPIO.output(pin, True)
+				GPIO.output(GPIO_PIN, True)
 			else:
-				GPIO.output(pin, False)
+				GPIO.output(GPIO_PIN, False)
 			print(log_file_data)
 		else:
 			log_file_data['更新延迟']='No Log File'
