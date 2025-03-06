@@ -110,7 +110,6 @@ def update_gps_data():
 
 
 		try:
-			print(APRS_LOG_FILE)
 			if os.path.exists(APRS_LOG_FILE):
 				log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
 				updatetime_diff=int(time.time()-log_file_update_time)
@@ -154,6 +153,7 @@ def path_data():
 
 @app.route('/log-data')
 def log_data():
+	print(gps_data_cache['log_file_data'])
 	return jsonify(gps_data_cache['log_file_data'])
 
 if __name__ == '__main__':
