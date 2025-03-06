@@ -143,14 +143,14 @@ def log_data():
 			#print(updatetime_diff)
 			log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
 			log_file_data['更新延迟']=updatetime_diff
-			if updatetime_diff<3:
-				GPIO.output(GPIO_PIN, True)
-			else:
-				GPIO.output(GPIO_PIN, False)
+			#if updatetime_diff<3:
+			#	GPIO.output(GPIO_PIN, True)
+			#else:
+			#	GPIO.output(GPIO_PIN, False)
 			#print(log_file_data)
 		else:
 			log_file_data['更新延迟']='No Log File'
-			GPIO.output(GPIO_PIN, False)
+			#GPIO.output(GPIO_PIN, False)
 		return jsonify(log_file_data)
 	except Exception as e:
 		print(f"Error fetching log file data: {e}")
