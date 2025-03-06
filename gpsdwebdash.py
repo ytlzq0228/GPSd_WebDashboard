@@ -96,7 +96,8 @@ def update_gps_data():
 					else:
 						status_data['status'] = status_map.get(data_json.get('status',1), "Unknown")
 					status_data['speed']="%.2f"%(status_data['speed']*3.6) #米/秒转公里/小时
-					status_data['time']=datetime.fromisoformat(status_data['time'].replace('Z', '+00:00')).strftime('%Y-%m-%d %H:%M:%S')
+					if status_data['time']!=0:
+						status_data['time']=datetime.fromisoformat(status_data['time'].replace('Z', '+00:00')).strftime('%Y-%m-%d %H:%M:%S')
 					gps_data_cache['TPV'] = status_data
 					#写入Path数据
 					for i in ['lat', 'lon', 'speed']:
