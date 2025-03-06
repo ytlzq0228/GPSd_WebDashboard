@@ -56,13 +56,13 @@ def get_constellation(prn):
 gps_data_cache = {
 	'SNR': {'satellites':[]},
 	'TPV': {},
-	'Path': {}
+	'Path': {},
+	'log_file_data': {}
 }
 
 def update_gps_data():
 	while True:
 		for new_data in gps_socket:
-
 			if new_data:
 				try:
 					data_json = json.loads(new_data)
@@ -108,6 +108,25 @@ def update_gps_data():
 					#gps_data_cache['Path']['speed']=5 #test only
 					gps_data_cache['Path']['speed']=max((round(gps_data_cache['Path']['speed'] / step) * step),0.5)
 
+
+		try:
+			if os.path.exists(APRS_LOG_FILE):
+				log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
+				updatetime_diff=int(time.time()-log_file_update_time)
+				#print(updatetime_diff)
+				gps_data_cache['log_file_data']['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
+				gps_data_cache['log_file_data']=updatetime_diff
+				if updatetime_diff<3:
+					GPIO.output(GPIO_PIN, True)
+				else:
+					GPIO.output(GPIO_PIN, False)
+				print(log_file_data)
+			else:
+				gps_data_cache['log_file_data']['更新延迟']='No Log File'
+				GPIO.output(GPIO_PIN, False)
+		except Exception as e:
+			print(f"Error fetching log file data: {e}")
+			return None
 		time.sleep(0.5)  # Reduce CPU usage
 
 # 启动后台线程更新数据
@@ -135,26 +154,7 @@ def path_data():
 
 @app.route('/log-data')
 def log_data():
-	try:
-		log_file_data={}
-		if os.path.exists(APRS_LOG_FILE):
-			log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
-			updatetime_diff=int(time.time()-log_file_update_time)
-			#print(updatetime_diff)
-			log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
-			log_file_data['更新延迟']=updatetime_diff
-			if updatetime_diff<3:
-				GPIO.output(GPIO_PIN, True)
-			else:
-				GPIO.output(GPIO_PIN, False)
-			print(log_file_data)
-		else:
-			log_file_data['更新延迟']='No Log File'
-			GPIO.output(GPIO_PIN, False)
-		return jsonify(log_file_data)
-	except Exception as e:
-		print(f"Error fetching log file data: {e}")
-		return None
+	return jsonify(gps_data_cache['log_file_data'])
 
 if __name__ == '__main__':
 	import logging
