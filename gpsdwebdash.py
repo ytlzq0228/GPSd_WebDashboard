@@ -145,7 +145,7 @@ def log_data():
 				GPIO.output(pin, True)
 			else:
 				GPIO.output(pin, False)
-			#print(log_file_data)
+			print(log_file_data)
 		else:
 			log_file_data['更新延迟']='No Log File'
 		return jsonify(log_file_data)
