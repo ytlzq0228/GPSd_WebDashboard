@@ -116,14 +116,14 @@ def update_log_file_data():
 			if os.path.exists(APRS_LOG_FILE):
 				log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
 				updatetime_diff=int(time.time()-log_file_update_time)
-				print(updatetime_diff)
+				#print(updatetime_diff)
 				gps_data_cache['log_file_data']['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
 				gps_data_cache['log_file_data']['更新延迟']=updatetime_diff
 				if updatetime_diff<3:
 					GPIO.output(GPIO_PIN, True)
 				else:
 					GPIO.output(GPIO_PIN, False)
-				print(gps_data_cache['log_file_data'])
+				#print(gps_data_cache['log_file_data'])
 			else:
 				gps_data_cache['log_file_data']['更新延迟']='No Log File'
 				GPIO.output(GPIO_PIN, False)
