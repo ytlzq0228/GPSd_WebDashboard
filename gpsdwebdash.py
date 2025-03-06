@@ -115,7 +115,7 @@ def update_gps_data():
 				updatetime_diff=int(time.time()-log_file_update_time)
 				#print(updatetime_diff)
 				gps_data_cache['log_file_data']['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
-				gps_data_cache['log_file_data']=updatetime_diff
+				gps_data_cache['log_file_data']['更新延迟']=updatetime_diff
 				if updatetime_diff<3:
 					GPIO.output(GPIO_PIN, True)
 				else:
@@ -126,7 +126,6 @@ def update_gps_data():
 				GPIO.output(GPIO_PIN, False)
 		except Exception as e:
 			print(f"Error fetching log file data: {e}")
-			return None
 		time.sleep(0.5)  # Reduce CPU usage
 
 # 启动后台线程更新数据
