@@ -123,7 +123,7 @@ def update_log_file_data():
 					GPIO.output(GPIO_PIN, True)
 				else:
 					GPIO.output(GPIO_PIN, False)
-				print(log_file_data)
+				print(gps_data_cache['log_file_data'])
 			else:
 				gps_data_cache['log_file_data']['更新延迟']='No Log File'
 				GPIO.output(GPIO_PIN, False)
