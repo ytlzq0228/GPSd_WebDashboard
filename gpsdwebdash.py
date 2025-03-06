@@ -80,6 +80,8 @@ def update_gps_data():
 					for i in ['alt', 'track', 'magtrack', 'magvar', 'time', 'speed']:
 						if i in data_json:
 							status_data[i]=data_json[i]
+						else:
+							status_data[i]=0
 					# 处理 GNSS 状态
 					mode_map={0: "Unknown",1: "no fix",2: "Normal Mode 2D",3: "Normal Mode 3D"}
 					status_map = {0: "Unknown",1: "Normal",2: "DGPS",3: "RTK FIX",4: "RTK FLOAT",5: "DR FIX",6: "GNSSDR",7: "Time (surveyed)",8: "Simulated",9: "P(Y)",}
