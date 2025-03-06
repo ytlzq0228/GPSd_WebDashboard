@@ -6,6 +6,7 @@ import os
 import configparser
 from gps3 import gps3
 from datetime import datetime
+import RPi.GPIO as GPIO
 
 CONFIG_FILE = '/etc/GPS_config.ini'
 config = configparser.ConfigParser()
@@ -14,6 +15,10 @@ config.read(CONFIG_FILE)
 LOG_FILE_PATH = config['SFTP_Config']['LOCAL_LOG_FILE_PATH']
 SSID = config['SSID_Config']['SSID']
 APRS_LOG_FILE = f"{LOG_FILE_PATH}/{datetime.now().strftime('%Y-%m-%d')}-GPS-{SSID}.log"
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(21, GPIO.OUT)
+
 
 app = Flask(__name__)
 
@@ -133,10 +138,14 @@ def log_data():
 		if os.path.exists(APRS_LOG_FILE):
 			log_file_update_time=os.path.getmtime(APRS_LOG_FILE)
 			updatetime_diff=int(time.time()-log_file_update_time)
-			print(updatetime_diff)
+			#print(updatetime_diff)
 			log_file_data['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
 			log_file_data['更新延迟']=updatetime_diff
-			print(log_file_data)
+			if updatetime_diff<3:
+				GPIO.output(pin, True)
+			else:
+				GPIO.output(pin, False)
+			#print(log_file_data)
 		else:
 			log_file_data['更新延迟']='No Log File'
 		return jsonify(log_file_data)
