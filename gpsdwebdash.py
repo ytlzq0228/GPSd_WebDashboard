@@ -122,10 +122,14 @@ def update_log_file_data():
 				#print(updatetime_diff)
 				gps_data_cache['log_file_data']['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
 				gps_data_cache['log_file_data']['更新延迟']=updatetime_diff
-				if updatetime_diff<5:
-					GPIO.output(GPIO_LOG_ERROR_PIN, True)
+				LOG_ERROR_STATUS=True
+				if updatetime_diff<10:
+					if not LOG_ERROR_STATUS:
+						GPIO.output(GPIO_LOG_ERROR_PIN, True)
+						LOG_ERROR_STATUS=True
 				else:
 					GPIO.output(GPIO_LOG_ERROR_PIN, False)
+					LOG_ERROR_STATUS=False
 				#print(gps_data_cache['log_file_data'])
 			else:
 				gps_data_cache['log_file_data']['更新延迟']='No Log File'
