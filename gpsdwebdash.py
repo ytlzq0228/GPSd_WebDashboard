@@ -18,9 +18,12 @@ APRS_LOG_FILE = f"{LOG_FILE_PATH}/{datetime.now().strftime('%Y-%m-%d')}-GPS-{SSI
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO_PIN=21
-GPIO.setup(GPIO_PIN, GPIO.OUT)
+GPIO_STARTUP_PIN=21
+GPIO_LOG_ERROR_PIN=16
+GPIO.setup(GPIO_STARTUP_PIN, GPIO.OUT)
+GPIO.setup(GPIO_LOG_ERROR_PIN, GPIO.OUT)
 
+GPIO.output(GPIO_STARTUP_PIN, True)
 
 app = Flask(__name__)
 
@@ -120,13 +123,13 @@ def update_log_file_data():
 				gps_data_cache['log_file_data']['更新时间']=datetime.fromtimestamp(log_file_update_time).strftime('%H:%M:%S')
 				gps_data_cache['log_file_data']['更新延迟']=updatetime_diff
 				if updatetime_diff<5:
-					GPIO.output(GPIO_PIN, True)
+					GPIO.output(GPIO_LOG_ERROR_PIN, True)
 				else:
-					GPIO.output(GPIO_PIN, False)
+					GPIO.output(GPIO_LOG_ERROR_PIN, False)
 				#print(gps_data_cache['log_file_data'])
 			else:
 				gps_data_cache['log_file_data']['更新延迟']='No Log File'
-				GPIO.output(GPIO_PIN, False)
+				GPIO.output(GPIO_LOG_ERROR_PIN, False)
 		except Exception as e:
 			print(f"Error fetching log file data: {e}")
 		time.sleep(0.5)  # Reduce CPU usage
