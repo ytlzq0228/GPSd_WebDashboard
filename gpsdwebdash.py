@@ -40,7 +40,7 @@ def get_constellation(prn):
 		'SBAS': range(33, 64),
 		'GL': range(65, 97),  # GLONASS uses PRNs from 33 to 65
 		'GA': range(301, 337),  # Galileo uses PRNs from 301 to 336
-		'BD': range(401, 420),  # BeiDou uses PRNs from 201 to 236
+		'BD': range(401, 430),  # BeiDou uses PRNs from 201 to 236
 		'QZSS': range(193, 198),  # QZSS uses PRNs from 193 to 197
 		'IRNSS': range(401, 408),  # IRNSS uses PRNs from 401 to 407
 		'WAAS': range(133, 139),  # WAAS (North America) uses PRNs from 133 to 138
