@@ -37,7 +37,7 @@ def get_constellation(prn):
 	# 定义PRN号与星座的对应关系
 	constellation_map = {
 		'GPS': range(1, 32),  # GPS uses PRNs from 1 to 32
-		'GPS SBAS': range(33, 64),
+		'SBAS': range(33, 64),
 		'GL': range(65, 97),  # GLONASS uses PRNs from 33 to 65
 		'GA': range(301, 337),  # Galileo uses PRNs from 301 to 336
 		'BD': range(401, 420),  # BeiDou uses PRNs from 201 to 236
